@@ -7,10 +7,12 @@ import { asyncHandler } from '../middleware/errorHandler.js';
 const router = Router();
 
 const TOKEN_NAME = 'vantage_token';
-const COOKIE_OPTIONS = {
+const isProduction = process.env.NODE_ENV === 'production';
+
+const COOKIE_OPTIONS: Parameters<typeof import('express').Response.cookie>[2] = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+  secure: isProduction,
+  sameSite: isProduction ? 'none' : 'lax',
   maxAge: 7 * 24 * 60 * 60 * 1000,
   path: '/'
 };
