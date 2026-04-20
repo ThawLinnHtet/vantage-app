@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #1c1c1e;
+  --color-surface: #ffffff;
+  --color-interactive: #5b76fe;
+  --color-interactive-pressed: #2a41b6;
+  --color-success: #00b473;
+  --color-border: #c7cad5;
+  --color-ring: rgb(224,226,232);
+  --color-coral-light: #ffc6c6;
+  --color-coral-dark: #600000;
+  --color-rose-light: #ffd8f4;
+  --color-rose-dark: #b84d7a;
+  --color-teal-light: #c3faf5;
+  --color-teal-dark: #187574;
+  --color-orange-light: #ffe6cd;
+  --color-orange-dark: #8c5a2a;
+  --color-yellow-light: #fff8c6;
+  --color-yellow-dark: #746019;
+  --color-moss-light: #d4f5d9;
+  --color-moss-dark: #187574;
+
+  --font-display: 'DM Sans', system-ui, sans-serif;
+  --font-body: 'Noto Sans', system-ui, sans-serif;
+
+  --font-size-hero: 56px;
+  --line-height-hero: 1.15;
+  --letter-spacing-hero: -1.68px;
+
+  --radius-button: 8px;
+  --radius-card: 12px;
+  --radius-panel: 20px;
+  --radius-container: 40px;
+
+  --shadow-ring: rgb(224,226,232) 0px 0px 0px 1px;
+}
+
+html {
+  font-family: 'Noto Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-interactive text-white px-4 py-2 rounded-button font-bold text-button transition-colors duration-200 cursor-pointer;
+  }
+
+  .btn-primary:hover {
+    @apply bg-interactive-pressed;
+  }
+
+  .btn-secondary {
+    @apply bg-transparent text-primary px-4 py-2 rounded-button font-bold text-button border border-border transition-colors duration-200 cursor-pointer;
+  }
+
+  .btn-secondary:hover {
+    @apply bg-gray-50;
+  }
+
+.input-field {
+    @apply bg-surface border border-gray-200 rounded-button px-4 py-3 text-base w-full box-border transition-colors duration-200;
+  }
+
+  .input-field:focus {
+    @apply outline-none ring-2 ring-interactive;
+  }
+
+  .input-field::placeholder {
+    @apply text-gray-400;
+  }
+
+  .card {
+    @apply bg-surface rounded-card shadow-ring p-4;
+  }
+
+  .text-hero {
+    font-family: var(--font-display);
+    font-size: var(--font-size-hero);
+    line-height: var(--line-height-hero);
+    letter-spacing: var(--letter-spacing-hero);
+    font-weight: 400;
+  }
+
+  .text-card-title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    line-height: 1.15;
+    letter-spacing: -0.72px;
+    font-weight: 400;
+  }
+
+  .text-caption {
+    font-family: var(--font-display);
+    font-size: 14px;
+    line-height: 1.71;
+  }
+
+  .text-body {
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.45;
+  }
+
+  .text-body-standard {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: -0.16px;
+  }
+
+  .text-subheading {
+    font-family: var(--font-body);
+    font-size: 22px;
+    line-height: 1.35;
+    letter-spacing: -0.44px;
+  }
+
+  .text-feature {
+    font-family: var(--font-display);
+    font-size: 18px;
+    line-height: 1.35;
+    font-weight: 600;
+  }
+
+  .text-button {
+    font-family: var(--font-display);
+    font-size: 17.5px;
+    line-height: 1.29;
+    letter-spacing: 0.175px;
+    font-weight: 700;
+  }
+
+  .auth-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 50%, #e8edff 100%);
+    border-radius: 24px;
+    box-shadow: 0 4px 24px rgba(91, 118, 254, 0.12), var(--shadow-ring);
+    padding: 2.5rem;
+  }
+
+  .error-field {
+    @apply bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg text-sm;
+  }
+
+  .success-field {
+    @apply bg-green-100 border border-teal-500 text-teal-700 px-4 py-3 rounded-lg text-sm;
+  }
+}
+
+.pastel-coral { background-color: var(--color-coral-light); }
+.pastel-rose { background-color: var(--color-rose-light); }
+.pastel-teal { background-color: var(--color-teal-light); }
+.pastel-orange { background-color: var(--color-orange-light); }
+.pastel-yellow { background-color: var(--color-yellow-light); }
+.pastel-moss { background-color: var(--color-moss-light); }
