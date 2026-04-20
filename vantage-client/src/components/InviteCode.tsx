@@ -360,7 +360,7 @@ export default function InviteCode({ inviteCode, onClose }: InviteCodeProps) {
             padding: 14px 18px;
           }
         }
-      `}
+      `}</style>
     </AnimatePresence>
   );
 }
