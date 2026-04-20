@@ -187,6 +187,18 @@ export default function InviteCode({ inviteCode, onClose }: InviteCodeProps) {
           color: #9ca3af;
         }
 
+        @media (max-width: 1024px) {
+          .invite-overlay {
+            align-items: center;
+            padding: 20px;
+          }
+
+          .invite-modal {
+            border-radius: 20px;
+            padding: 24px 24px 28px;
+          }
+        }
+
         @media (max-width: 640px) {
           .invite-overlay {
             align-items: center;

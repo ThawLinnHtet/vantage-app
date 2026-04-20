@@ -426,6 +426,21 @@ USD, EUR, GBP, JPY, AUD, CAD, MMK, THB, VND, IDR, MYR, PHP, SGD, KRW, CNY, INR (
 | 2 | Invite modal | Centered (not bottom), border-radius 20px |
 | 3 | Safe-area | Added padding-bottom on both modals |
 
+### Tablet Responsive (April 2026):
+| # | Fix | Description |
+|----|-----|-------------|
+| 1 | Breakpoint | Added 1024px tablet-specific breakpoint |
+| 2 | POI modal | max-height 65vh at 641-1024px |
+| 3 | Invite modal | Centered at 641-1024px |
+
+### UI Layer Fixes (April 2026):
+| # | Fix | Description |
+|----|-----|-------------|
+| 1 | Mobile menu z-index | Added z-index: 110 to dropdown (above map + toggle) |
+| 2 | Delete modal z-index | Increased from 50 to 300 for consistency |
+| 3 | Map position | Changed from sticky to relative (removes stacking context) |
+| 4 | All z-indexes | Above Leaflet's 400-1000 range |
+
 ### Pending Features:
 - Trip details page (view/edit/delete) ✅ COMPLETE
 - POI Management (map integration) ✅ COMPLETE

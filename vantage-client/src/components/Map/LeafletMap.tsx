@@ -52,11 +52,24 @@ const createCategoryIcon = (category: POICategory, isConfirmed: boolean) => {
       }
     </style>
   ` : '';
+  const animateIn = `
+    <style>
+      @keyframes markerPopIn {
+        0% { transform: scale(0); opacity: 0; }
+        60% { transform: scale(1.15); opacity: 1; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+      .marker-container {
+        animation: markerPopIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      }
+    </style>
+  `;
   
   return L.divIcon({
     className: 'custom-marker',
     html: `
       ${pulseAnimation}
+      ${animateIn}
       <div class="${isConfirmed ? 'confirmed-marker' : ''}" style="
         width: ${size}px;
         height: ${size}px;
@@ -188,8 +201,10 @@ function LeafletMapComponent({
   function SelectedPOIFlyTo({ poi, zoom }: { poi: POI | null | undefined; zoom: number }) {
     const map = useMap();
     useEffect(() => {
-      if (poi && poi.lat && poi.lng) {
-        map.flyTo([poi.lat, poi.lng], zoom, { duration: 1 });
+      const lat = Number(poi?.lat);
+      const lng = Number(poi?.lng);
+      if (poi && !isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+        map.flyTo([lat, lng], zoom, { duration: 1 });
       }
     }, [poi, zoom, map]);
     return null;

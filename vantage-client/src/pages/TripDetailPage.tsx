@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Plus, Share2, Calendar, Users, Trash2, Map, List } from 'lucide-react';
+import { ArrowLeft, Plus, Share2, Calendar, Users, Trash2, Map, List, Menu } from 'lucide-react';
 import { useAppStore } from '../stores/appStore';
 import { trips } from '../services/api';
 import { useTripSocket } from '../hooks/useTripSocket';
@@ -259,7 +259,7 @@ export default function TripDetailPage() {
           </div>
 
           <button className="mobile-menu-btn" onClick={() => setShowMobileActions(!showMobileActions)}>
-            <Plus size={22} />
+            <Menu size={22} />
           </button>
         </div>
 
@@ -288,7 +288,12 @@ export default function TripDetailPage() {
       </header>
 
       <div className="trip-content">
-        <div className={`map-section ${mobileView === 'list' ? 'hidden-mobile' : ''}`}>
+        <motion.div 
+          className={`map-section ${mobileView === 'list' ? 'hidden-mobile' : ''}`}
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.35, ease: 'easeOut' }}
+        >
           <LeafletMap
             pois={trip.pois}
             center={mapCenter || getDefaultCenter()}
@@ -303,9 +308,14 @@ export default function TripDetailPage() {
               setSelectedPOI(poi);
             }}
           />
-        </div>
+        </motion.div>
 
-        <div className={`sidebar-section ${mobileView === 'map' ? 'hidden-mobile' : ''}`}>
+        <motion.div 
+          className={`sidebar-section ${mobileView === 'map' ? 'hidden-mobile' : ''}`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, delay: 0.1, ease: 'easeOut' }}
+        >
           <BudgetMeter spent={totalBudget} total={trip.budget.total} currency={trip.budget.currency} />
           
           <POIList
@@ -320,7 +330,7 @@ export default function TripDetailPage() {
             onDelete={handleDeletePOI}
             onSelectPOI={(poi) => setSelectedPOI(poi)}
           />
-        </div>
+        </motion.div>
       </div>
 
       <div className="mobile-view-toggle">
@@ -418,11 +428,22 @@ export default function TripDetailPage() {
           to { transform: rotate(360deg); }
         }
 
+        @keyframes slideIn {
+          from {
+            transform: translateX(20px);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+
         .trip-header {
           background: white;
           border-bottom: 1px solid #e5e7eb;
           position: relative;
-          z-index: 10;
+          z-index: 200;
         }
 
         .trip-header-top {
@@ -554,7 +575,7 @@ export default function TripDetailPage() {
           border-radius: 12px;
           box-shadow: 0 4px 20px rgba(0,0,0,0.15);
           padding: 8px;
-          z-index: 20;
+          z-index: 260;
           display: flex;
           flex-direction: column;
           gap: 4px;
@@ -588,22 +609,51 @@ export default function TripDetailPage() {
           grid-template-columns: 1fr 400px;
           gap: 24px;
           padding: 24px;
-          flex: 1;
+        }
+
+        .trip-content > .map-section,
+        .trip-content > .sidebar-section {
+          display: flex;
         }
 
         .map-section {
-          position: sticky;
+          position: relative;
+          z-index: 1;
           top: 24px;
           height: calc(100vh - 140px);
           border-radius: 16px;
           overflow: hidden;
           box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+          transition: opacity 0.2s ease, transform 0.2s ease;
         }
 
         .sidebar-section {
           display: flex;
           flex-direction: column;
           gap: 20px;
+          min-height: 100%;
+          background: #f0f0f0 !important;
+          transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .map-section.hidden-mobile {
+          display: none !important;
+        }
+
+        .sidebar-section.hidden-mobile {
+          display: none !important;
+        }
+
+        @media (min-width: 1025px) {
+          .trip-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+          }
+          
+          .map-section.hidden-mobile,
+          .sidebar-section.hidden-mobile {
+            display: flex !important;
+          }
         }
 
         .mobile-view-toggle {
@@ -616,7 +666,7 @@ export default function TripDetailPage() {
           border-radius: 16px;
           box-shadow: 0 4px 24px rgba(0,0,0,0.15);
           padding: 6px;
-          z-index: 100;
+          z-index: 250;
           gap: 4px;
         }
 
@@ -655,7 +705,7 @@ export default function TripDetailPage() {
           display: flex;
           align-items: center;
           justify-content: center;
-          z-index: 50;
+          z-index: 300;
           padding: 16px;
         }
 
@@ -720,50 +770,10 @@ export default function TripDetailPage() {
 
         @media (max-width: 1024px) {
           .trip-content {
-            grid-template-columns: 1fr;
+            display: flex !important;
+            flex-direction: column;
             padding: 16px;
-            gap: 16px;
-          }
-
-          .map-section {
-            position: relative;
-            height: 450px;
-            top: 0;
-          }
-
-          .sidebar-section {
-            display: none;
-          }
-
-          .map-section.hidden-mobile {
-            display: none;
-          }
-
-          .sidebar-section.hidden-mobile {
-            display: flex;
-          }
-
-          .sidebar-section.mobile-visible {
-            display: flex;
-          }
-
-          .mobile-view-toggle {
-            display: flex;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .trip-header-top {
-            padding: 12px 16px;
-          }
-
-          .trip-info h1 {
-            font-size: 16px;
-          }
-
-          .trip-meta {
-            font-size: 12px;
-            gap: 8px;
+            gap: 0;
           }
 
           .trip-actions-desktop {
@@ -775,23 +785,21 @@ export default function TripDetailPage() {
           }
 
           .map-section {
-            height: 40vh;
-            min-height: 280px;
+            position: relative;
+            height: calc(100vh - 160px);
+            top: 0;
             border-radius: 0;
+            width: 100%;
           }
 
-          .map-section.hidden-mobile {
-            display: none;
-          }
-
-          .sidebar-section.hidden-mobile {
-            display: flex;
+          .sidebar-section {
+            display: flex !important;
+            flex-direction: column;
+            gap: 20px;
+            min-height: calc(100vh - 160px);
+            width: 100%;
             padding-bottom: 96px;
-          }
-
-          .sidebar-section.mobile-visible {
-            display: flex;
-            padding-bottom: 96px;
+            background: #f0f0f0 !important;
           }
 
           .mobile-view-toggle {
@@ -841,15 +849,13 @@ export default function TripDetailPage() {
             display: none;
           }
 
-          .map-section.hidden-mobile {
-            display: none;
+          .map-section {
+            height: calc(100vh - 140px);
+            min-height: 300px;
           }
 
-          .sidebar-section.hidden-mobile {
-            display: flex;
-            height: calc(100vh - 90px);
-            overflow-y: auto;
-            padding: 0 16px 96px;
+          .sidebar-section {
+            min-height: calc(100vh - 90px);
           }
 
           .mobile-view-toggle button span {
