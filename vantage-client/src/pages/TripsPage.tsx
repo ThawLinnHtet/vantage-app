@@ -125,7 +125,7 @@ export default function TripsPage() {
 
       <main className="flex-1 flex flex-col items-center px-4 md:px-6 py-8 md:py-12 lg:py-16">
         <div className="w-full max-w-5xl">
-          <div className="flex items-center justify-between gap-2 mb-6 md:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-2 mb-6 md:mb-8">
             <motion.h2 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -134,24 +134,26 @@ export default function TripsPage() {
             >
               Your Trips
             </motion.h2>
-            <motion.button 
-              onClick={() => setShowJoinModal(true)}
-              className="btn-secondary text-xs md:text-sm shrink-0" 
-              style={{ padding: '10px 16px', borderRadius: '8px' }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Join Trip
-            </motion.button>
-            <motion.button 
-              onClick={() => setShowCreateModal(true)}
-              className="btn-primary text-xs md:text-sm shrink-0" 
-              style={{ padding: '10px 16px', borderRadius: '8px' }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              + Create New Trip
-            </motion.button>
+            <div className="flex items-center gap-2 sm:gap-3">
+              <motion.button 
+                onClick={() => setShowJoinModal(true)}
+                className="btn-secondary text-xs md:text-sm shrink-0" 
+                style={{ padding: '10px 16px', borderRadius: '8px', whiteSpace: 'nowrap' }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Join Trip
+              </motion.button>
+              <motion.button 
+                onClick={() => setShowCreateModal(true)}
+                className="btn-primary text-xs md:text-sm shrink-0" 
+                style={{ padding: '10px 16px', borderRadius: '8px', whiteSpace: 'nowrap' }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                + Create New Trip
+              </motion.button>
+            </div>
           </div>
 
           {isLoading ? (
