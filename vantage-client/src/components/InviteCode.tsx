@@ -330,7 +330,7 @@ export default function InviteCode({ inviteCode, onClose }: InviteCodeProps) {
           }
         }
 
-        @media (min-width: 641px) and (max-width: 1024px) {
+        @media (min-width: 768px) {
           .invite-overlay {
             align-items: center;
             padding: 24px;

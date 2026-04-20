@@ -310,7 +310,7 @@ export default function JoinCodeModal({ onClose }: JoinCodeModalProps) {
           }
         }
 
-        @media (min-width: 641px) and (max-width: 1024px) {
+        @media (min-width: 768px) {
           .join-modal {
             border-radius: 24px;
             padding: 32px 28px;
