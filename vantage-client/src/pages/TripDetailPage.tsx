@@ -325,12 +325,14 @@ export default function TripDetailPage() {
 
       <div className="mobile-view-toggle">
         <button 
+          type="button"
           className={mobileView === 'map' ? 'active' : ''} 
           onClick={() => setMobileView('map')}
         >
           <Map size={18} /> Map
         </button>
         <button 
+          type="button"
           className={mobileView === 'list' ? 'active' : ''} 
           onClick={() => setMobileView('list')}
         >
@@ -614,15 +616,18 @@ export default function TripDetailPage() {
           border-radius: 16px;
           box-shadow: 0 4px 24px rgba(0,0,0,0.15);
           padding: 6px;
-          z-index: 30;
+          z-index: 100;
           gap: 4px;
         }
 
         .mobile-view-toggle button {
           display: flex;
           align-items: center;
+          justify-content: center;
           gap: 8px;
           padding: 12px 20px;
+          min-height: 44px;
+          min-width: 44px;
           border: none;
           background: transparent;
           border-radius: 10px;
@@ -630,12 +635,17 @@ export default function TripDetailPage() {
           font-weight: 500;
           color: #6b7280;
           cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
           transition: all 0.2s;
         }
 
         .mobile-view-toggle button.active {
           background: #5b76fe;
           color: white;
+        }
+
+        .mobile-view-toggle button:active {
+          transform: scale(0.96);
         }
 
         .modal-overlay {
@@ -736,6 +746,10 @@ export default function TripDetailPage() {
           .sidebar-section.mobile-visible {
             display: flex;
           }
+
+          .mobile-view-toggle {
+            display: flex;
+          }
         }
 
         @media (max-width: 768px) {
@@ -772,20 +786,53 @@ export default function TripDetailPage() {
 
           .sidebar-section.hidden-mobile {
             display: flex;
-            padding-bottom: 80px;
+            padding-bottom: 96px;
           }
 
           .sidebar-section.mobile-visible {
             display: flex;
-            padding-bottom: 80px;
+            padding-bottom: 96px;
           }
 
           .mobile-view-toggle {
             display: flex;
+            z-index: 100;
+            padding: 6px;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+            background: white;
+            padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+          }
+
+          .mobile-view-toggle button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 20px;
+            min-height: 44px;
+            border: none;
+            background: transparent;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: all 0.2s ease;
+          }
+
+          .mobile-view-toggle button.active {
+            background: #5b76fe;
+            color: white;
+          }
+
+          .mobile-view-toggle button:active {
+            transform: scale(0.96);
           }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 640px) {
           .trip-info h1 {
             font-size: 15px;
           }
@@ -802,7 +849,7 @@ export default function TripDetailPage() {
             display: flex;
             height: calc(100vh - 90px);
             overflow-y: auto;
-            padding: 0 16px 80px;
+            padding: 0 16px 96px;
           }
 
           .mobile-view-toggle button span {
@@ -811,10 +858,11 @@ export default function TripDetailPage() {
 
           .mobile-view-toggle button {
             padding: 12px 16px;
+            min-height: 44px;
           }
 
           .mobile-view-toggle {
-            bottom: 16px;
+            bottom: calc(16px + env(safe-area-inset-bottom, 0px));
             padding: 4px;
             border-radius: 14px;
           }

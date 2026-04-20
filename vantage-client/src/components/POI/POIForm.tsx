@@ -308,7 +308,7 @@ export default function POIForm({ poi, selectedLocation, onSubmit, onClose }: PO
 
         .poi-form-content-scroll {
           overflow-y: auto;
-          max-height: 85vh;
+          max-height: calc(85vh - 80px);
           padding-bottom: 8px;
           scrollbar-width: none;
           -ms-overflow-style: none;
@@ -571,15 +571,27 @@ export default function POIForm({ poi, selectedLocation, onSubmit, onClose }: PO
           background: #4a63e8;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 640px) {
           .poi-form-overlay {
-            align-items: flex-end;
-            padding: 0;
+            align-items: center;
+            padding: 16px;
           }
 
           .poi-form-modal {
-            border-radius: 24px 24px 0 0;
-            max-height: 85vh;
+            border-radius: 20px;
+            max-height: 70vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+          }
+
+          .poi-form-content-scroll {
+            max-height: calc(70vh - 80px);
+            padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+          }
+
+          .poi-form-header {
+            flex-shrink: 0;
           }
 
           .form-row {
@@ -613,12 +625,6 @@ export default function POIForm({ poi, selectedLocation, onSubmit, onClose }: PO
           .submit-btn {
             padding: 14px 16px;
             font-size: 14px;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .poi-form-modal {
-            border-radius: 20px 20px 0 0;
           }
         }
       `}</style>

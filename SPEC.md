@@ -409,6 +409,23 @@ USD, EUR, GBP, JPY, AUD, CAD, MMK, THB, VND, IDR, MYR, PHP, SGD, KRW, CNY, INR (
 | 2 | Modal rounded corners | overflow: hidden on modal to clip content to rounded corners |
 | 3 | Desktop modal height | Increased max-height from 60vh to 85vh (no scroll needed) |
 
+### Mobile Responsive Fixes (April 2026):
+| # | Fix | Description |
+|----|-----|-------------|
+| 1 | Toggle fix | Added type="button", z-index: 100, show at 1024px breakpoint |
+| 2 | Breakpoints | Updated 480px → 640px for mobile (industry standard) |
+| 3 | iOS safe-area | Added env(safe-area-inset-bottom) support |
+| 4 | Touch targets | Increased to 44px minimum (industry standard) |
+| 5 | Tap highlight | Added -webkit-tap-highlight-color: transparent |
+| 6 | Active state | Added transform scale on button press |
+
+### Mobile Modal Fixes (April 2026):
+| # | Fix | Description |
+|----|-----|-------------|
+| 1 | POI modal | Centered (not bottom), max-height 70vh, border-radius 20px |
+| 2 | Invite modal | Centered (not bottom), border-radius 20px |
+| 3 | Safe-area | Added padding-bottom on both modals |
+
 ### Pending Features:
 - Trip details page (view/edit/delete) ✅ COMPLETE
 - POI Management (map integration) ✅ COMPLETE

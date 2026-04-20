@@ -187,15 +187,15 @@ export default function InviteCode({ inviteCode, onClose }: InviteCodeProps) {
           color: #9ca3af;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 640px) {
           .invite-overlay {
-            align-items: flex-end;
-            padding: 0;
+            align-items: center;
+            padding: 16px;
           }
 
           .invite-modal {
-            border-radius: 24px 24px 0 0;
-            padding: 24px 20px 28px;
+            border-radius: 20px;
+            padding: 24px 20px calc(28px + env(safe-area-inset-bottom, 0px));
           }
 
           .invite-header {
@@ -232,12 +232,6 @@ export default function InviteCode({ inviteCode, onClose }: InviteCodeProps) {
             width: 100%;
             justify-content: center;
             padding: 14px;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .invite-modal {
-            border-radius: 20px 20px 0 0;
           }
         }
       `}</style>
