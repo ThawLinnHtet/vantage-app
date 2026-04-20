@@ -19,9 +19,11 @@ dotenv.config();
 const app = express();
 const httpServer = createServer(app);
 
+const CLIENT_ORIGIN = process.env.CLIENT_URL?.replace(/\/$/, '') || 'http://localhost:5173';
+
 export const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: CLIENT_ORIGIN,
     methods: ['GET', 'POST'],
     credentials: true
   }
@@ -39,7 +41,7 @@ io.use((socket, next) => {
 });
 
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: CLIENT_ORIGIN,
   credentials: true
 }));
 app.use(helmet());
