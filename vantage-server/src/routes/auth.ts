@@ -9,10 +9,14 @@ const router = Router();
 const TOKEN_NAME = 'vantage_token';
 const isProduction = process.env.NODE_ENV === 'production';
 
+type SameSiteOption = 'strict' | 'none' | 'lax';
+
+const sameSiteValue: SameSiteOption = isProduction ? 'none' : 'lax';
+
 const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: isProduction,
-  sameSite: isProduction ? 'none' : 'lax' as const,
+  sameSite: sameSiteValue,
   maxAge: 7 * 24 * 60 * 60 * 1000,
   path: '/'
 };
