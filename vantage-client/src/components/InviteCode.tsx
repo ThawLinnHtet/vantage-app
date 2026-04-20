@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Copy, Check, Link } from 'lucide-react';
+import { X, Copy, Check, Link, Hash } from 'lucide-react';
 
 interface InviteCodeProps {
   inviteCode: string;
@@ -8,17 +8,46 @@ interface InviteCodeProps {
 }
 
 export default function InviteCode({ inviteCode, onClose }: InviteCodeProps) {
-  const [copied, setCopied] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
 
   const inviteUrl = `${window.location.origin}/join/${inviteCode}`;
 
-  const handleCopy = async () => {
+  const copyToClipboard = async (text: string) => {
     try {
-      await navigator.clipboard.writeText(inviteUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+      // Fallback for older browsers
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      return true;
     } catch (err) {
       console.error('Failed to copy:', err);
+      return false;
+    }
+  };
+
+  const handleCopyLink = async () => {
+    const success = await copyToClipboard(inviteUrl);
+    if (success) {
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2000);
+    }
+  };
+
+  const handleCopyCode = async () => {
+    const success = await copyToClipboard(inviteCode);
+    if (success) {
+      setCopiedCode(true);
+      setTimeout(() => setCopiedCode(false), 2000);
     }
   };
 
@@ -47,19 +76,43 @@ export default function InviteCode({ inviteCode, onClose }: InviteCodeProps) {
               <Link size={24} />
             </div>
             <h3>Invite Collaborators</h3>
-            <p>Share this link to invite others to your trip</p>
+            <p>Share this link or code to invite others to your trip</p>
           </div>
 
-          <div className="invite-code-box">
-            <input type="text" value={inviteUrl} readOnly />
-            <button className="copy-btn" onClick={handleCopy}>
-              {copied ? <Check size={20} /> : <Copy size={20} />}
-              <span>{copied ? 'Copied!' : 'Copy'}</span>
-            </button>
+          <div className="invite-section">
+            <label className="invite-label">
+              <Link size={14} />
+              <span>Invite Link</span>
+            </label>
+            <div className="invite-input-row">
+              <input type="text" value={inviteUrl} readOnly className="invite-input" />
+              <button className="copy-btn" onClick={handleCopyLink}>
+                {copiedLink ? <Check size={18} /> : <Copy size={18} />}
+                <span>{copiedLink ? 'Copied!' : 'Copy'}</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="invite-divider">
+            <span>OR</span>
+          </div>
+
+          <div className="invite-section">
+            <label className="invite-label">
+              <Hash size={14} />
+              <span>Invite Code</span>
+            </label>
+            <div className="invite-input-row">
+              <input type="text" value={inviteCode} readOnly className="invite-input code-input" />
+              <button className="copy-btn" onClick={handleCopyCode}>
+                {copiedCode ? <Check size={18} /> : <Copy size={18} />}
+                <span>{copiedCode ? 'Copied!' : 'Copy'}</span>
+              </button>
+            </div>
           </div>
 
           <div className="invite-note">
-            <p>Anyone with this link can view and suggest POIs for this trip.</p>
+            <p>Anyone with this link or code can view and suggest POIs for this trip.</p>
           </div>
         </motion.div>
       </motion.div>
@@ -139,15 +192,28 @@ export default function InviteCode({ inviteCode, onClose }: InviteCodeProps) {
           font-size: 14px;
         }
 
-        .invite-code-box {
-          display: flex;
-          gap: 12px;
-          margin-bottom: 20px;
+        .invite-section {
+          margin-bottom: 0;
         }
 
-        .invite-code-box input {
+        .invite-label {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          margin-bottom: 8px;
+          color: #6b7280;
+          font-size: 13px;
+          font-weight: 500;
+        }
+
+        .invite-input-row {
+          display: flex;
+          gap: 10px;
+        }
+
+        .invite-input {
           flex: 1;
-          padding: 14px 16px;
+          padding: 12px 14px;
           border: 1px solid #e5e7eb;
           border-radius: 12px;
           font-size: 13px;
@@ -157,16 +223,25 @@ export default function InviteCode({ inviteCode, onClose }: InviteCodeProps) {
           text-overflow: ellipsis;
         }
 
+        .invite-input.code-input {
+          font-size: 16px;
+          font-weight: 600;
+          letter-spacing: 0.2em;
+          text-align: center;
+          text-transform: uppercase;
+          color: #1f2937;
+        }
+
         .copy-btn {
           display: flex;
           align-items: center;
-          gap: 8px;
-          padding: 14px 20px;
+          gap: 6px;
+          padding: 12px 16px;
           background: #5b76fe;
           color: white;
           border: none;
           border-radius: 12px;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 600;
           cursor: pointer;
           transition: all 0.2s;
@@ -177,8 +252,28 @@ export default function InviteCode({ inviteCode, onClose }: InviteCodeProps) {
           background: #4a63e8;
         }
 
+        .invite-divider {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          margin: 20px 0;
+          color: #9ca3af;
+          font-size: 12px;
+          font-weight: 500;
+          text-transform: uppercase;
+        }
+
+        .invite-divider::before,
+        .invite-divider::after {
+          content: '';
+          flex: 1;
+          height: 1px;
+          background: #e5e7eb;
+        }
+
         .invite-note {
           text-align: center;
+          margin-top: 20px;
         }
 
         .invite-note p {
@@ -230,12 +325,12 @@ export default function InviteCode({ inviteCode, onClose }: InviteCodeProps) {
             height: 22px;
           }
 
-          .invite-code-box {
+          .invite-input-row {
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
           }
 
-          .invite-code-box input {
+          .invite-input {
             font-size: 14px;
             padding: 12px 14px;
           }
@@ -243,7 +338,7 @@ export default function InviteCode({ inviteCode, onClose }: InviteCodeProps) {
           .copy-btn {
             width: 100%;
             justify-content: center;
-            padding: 14px;
+            padding: 12px;
           }
         }
       `}</style>

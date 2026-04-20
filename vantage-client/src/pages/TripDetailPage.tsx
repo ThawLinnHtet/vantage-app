@@ -249,7 +249,13 @@ export default function TripDetailPage() {
                 <Trash2 size={20} />
               </button>
             )}
-            <button className="icon-btn" onClick={() => setShowInvite(true)}>
+            <button className="icon-btn" onClick={() => {
+              if (!trip?.inviteCode) {
+                addToast('No invite code available for this trip', 'error');
+                return;
+              }
+              setShowInvite(true);
+            }}>
               <Share2 size={20} />
             </button>
             <button className="primary-btn" onClick={() => setShowPOIForm(true)}>
@@ -276,7 +282,15 @@ export default function TripDetailPage() {
                   <Trash2 size={18} /> Delete trip
                 </button>
               )}
-              <button onClick={() => { setShowInvite(true); setShowMobileActions(false); }}>
+              <button onClick={() => { 
+                if (!trip?.inviteCode) {
+                  addToast('No invite code available for this trip', 'error');
+                  setShowMobileActions(false);
+                  return;
+                }
+                setShowInvite(true); 
+                setShowMobileActions(false); 
+              }}>
                 <Share2 size={18} /> Share
               </button>
               <button onClick={() => { setShowPOIForm(true); setShowMobileActions(false); }}>
