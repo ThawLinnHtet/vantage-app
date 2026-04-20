@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Plus, Share2, Calendar, Users, Trash2, Map, List, Menu } from 'lucide-react';
 import { useAppStore } from '../stores/appStore';
-import { trips } from '../services/api';
+import { trips, geocode } from '../services/api';
 import { useTripSocket } from '../hooks/useTripSocket';
 import { useToastStore } from '../stores/toastStore';
 import { POI, Trip } from '../types';
@@ -55,6 +55,21 @@ export default function TripDetailPage() {
         pois: prev.pois.map(p => p._id === updatedPOI._id ? updatedPOI : p)
       };
     });
+  }, []);
+
+  const handleMapLongPress = useCallback(async (lat: number, lng: number) => {
+    setSelectedLocation({ lat, lng });
+    setEditingPOI(null);
+    setShowPOIForm(true);
+    
+    try {
+      const result = await geocode.reverse(lat, lng);
+      if (result.display_name) {
+        setSelectedLocation(prev => prev ? { ...prev, address: result.display_name } : null);
+      }
+    } catch (err) {
+      console.error('Reverse geocode failed:', err);
+    }
   }, []);
 
   const handlePOICreate = useCallback((newPOI: POI) => {
@@ -316,7 +331,12 @@ export default function TripDetailPage() {
             locationError={locationError}
             addMode={showPOIForm && !editingPOI}
             selectedPOI={selectedPOI}
-            onMapClick={(lat, lng) => setSelectedLocation({ lat, lng })}
+            onMapClick={(lat, lng) => {
+              if (showPOIForm && !editingPOI) {
+                setSelectedLocation({ lat, lng });
+              }
+            }}
+            onMapLongPress={handleMapLongPress}
             onLocateClick={handleLocateMe}
             onPOIClick={(poi) => {
               setSelectedPOI(poi);

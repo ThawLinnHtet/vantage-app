@@ -6,7 +6,7 @@ import { geocode } from '../../services/api';
 
 interface POIFormProps {
   poi?: POI | null;
-  selectedLocation?: { lat: number; lng: number } | null;
+  selectedLocation?: { lat: number; lng: number; address?: string } | null;
   onSubmit: (data: Partial<POI>) => void;
   onClose: () => void;
 }
@@ -49,9 +49,14 @@ export default function POIForm({ poi, selectedLocation, onSubmit, onClose }: PO
     } else if (selectedLocation) {
       setFormData(prev => ({
         ...prev,
+        category: 'other',
+        cost: 0,
         lat: selectedLocation.lat,
         lng: selectedLocation.lng,
       }));
+      if (selectedLocation.address) {
+        setSearchQuery(selectedLocation.address);
+      }
     }
   }, [poi, selectedLocation]);
 

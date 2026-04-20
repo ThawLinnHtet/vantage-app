@@ -1,4 +1,4 @@
-import { useEffect, useCallback, memo } from 'react';
+import { useEffect, useCallback, memo, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -17,6 +17,7 @@ interface LeafletMapProps {
   onMapClick?: (lat: number, lng: number) => void;
   onLocateClick?: () => void;
   onPOIClick?: (poi: POI) => void;
+  onMapLongPress?: (lat: number, lng: number) => void;
 }
 
 const CATEGORY_COLORS: Record<POICategory, { bg: string; border: string }> = {
@@ -108,11 +109,29 @@ const userLocationIcon = L.divIcon({
   iconAnchor: [10, 10],
 });
 
-function MapClickHandler({ onClick, enabled }: { onClick: (lat: number, lng: number) => void; enabled: boolean }) {
+function MapClickHandler({ 
+  onClick, 
+  enabled, 
+  onMapClick,
+  isMobile 
+}: { 
+  onClick: (lat: number, lng: number) => void; 
+  enabled: boolean;
+  onMapClick?: (lat: number, lng: number) => void;
+  isMobile?: boolean;
+}) {
   useMapEvents({
     click: (e) => {
       if (enabled && onClick) {
         onClick(e.latlng.lat, e.latlng.lng);
+      } else if (onMapClick && !enabled) {
+        onMapClick(e.latlng.lat, e.latlng.lng);
+      }
+    },
+    contextmenu: (e) => {
+      if (isMobile && onMapClick && !enabled) {
+        e.originalEvent.preventDefault();
+        onMapClick(e.latlng.lat, e.latlng.lng);
       }
     },
   });
@@ -192,11 +211,27 @@ function LeafletMapComponent({
   onMapClick,
   onLocateClick,
   onPOIClick,
+  onMapLongPress,
 }: LeafletMapProps) {
   const defaultCenter: [number, number] = center || [48.8566, 2.3522];
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768 || 'ontouchstart' in window);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const handleMapClick = useCallback((lat: number, lng: number) => {
     onMapClick?.(lat, lng);
   }, [onMapClick]);
+
+  const handleMapLongPress = useCallback((lat: number, lng: number) => {
+    onMapLongPress?.(lat, lng);
+  }, [onMapLongPress]);
 
   function SelectedPOIFlyTo({ poi, zoom }: { poi: POI | null | undefined; zoom: number }) {
     const map = useMap();
@@ -224,7 +259,12 @@ function LeafletMapComponent({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <MapClickHandler onClick={handleMapClick} enabled={addMode} />
+        <MapClickHandler 
+          onClick={handleMapClick} 
+          enabled={addMode} 
+          onMapClick={handleMapLongPress}
+          isMobile={isMobile}
+        />
         
         {/* User Location Marker */}
         {userLocation && (
