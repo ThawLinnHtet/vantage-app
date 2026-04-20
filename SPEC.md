@@ -422,7 +422,7 @@ USD, EUR, GBP, JPY, AUD, CAD, MMK, THB, VND, IDR, MYR, PHP, SGD, KRW, CNY, INR (
 ### Mobile Modal Fixes (April 2026):
 | # | Fix | Description |
 |----|-----|-------------|
-| 1 | POI modal | Centered (not bottom), max-height 70vh, border-radius 20px |
+| 1 | POI modal | Centered (not bottom), max-height 60vh, border-radius 20px |
 | 2 | Invite modal | Centered (not bottom), border-radius 20px |
 | 3 | Safe-area | Added padding-bottom on both modals |
 

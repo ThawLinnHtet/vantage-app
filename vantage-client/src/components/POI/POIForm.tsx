@@ -579,14 +579,14 @@ export default function POIForm({ poi, selectedLocation, onSubmit, onClose }: PO
 
           .poi-form-modal {
             border-radius: 20px;
-            max-height: 70vh;
+            max-height: 60vh;
             overflow: hidden;
             display: flex;
             flex-direction: column;
           }
 
           .poi-form-content-scroll {
-            max-height: calc(70vh - 80px);
+            max-height: calc(60vh - 80px);
             padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
           }
 
