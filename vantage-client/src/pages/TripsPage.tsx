@@ -5,6 +5,7 @@ import { useAppStore } from '../stores/appStore';
 import { useToastStore } from '../stores/toastStore';
 import { auth, trips } from '../services/api';
 import type { Trip } from '../types';
+import JoinCodeModal from '../components/JoinCodeModal';
 
 const getToday = () => new Date().toISOString().split('T')[0];
 
@@ -61,6 +62,7 @@ export default function TripsPage() {
   const [tripsList, setTripsList] = useState<Trip[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showJoinModal, setShowJoinModal] = useState(false);
   const addToast = useToastStore((state) => state.addToast);
 
   useEffect(() => {
@@ -132,6 +134,15 @@ export default function TripsPage() {
             >
               Your Trips
             </motion.h2>
+            <motion.button 
+              onClick={() => setShowJoinModal(true)}
+              className="btn-secondary text-xs md:text-sm shrink-0" 
+              style={{ padding: '10px 16px', borderRadius: '8px' }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Join Trip
+            </motion.button>
             <motion.button 
               onClick={() => setShowCreateModal(true)}
               className="btn-primary text-xs md:text-sm shrink-0" 
@@ -226,6 +237,9 @@ export default function TripsPage() {
       <AnimatePresence>
         {showCreateModal && (
           <CreateTripModal onClose={() => setShowCreateModal(false)} onCreated={loadTrips} />
+        )}
+        {showJoinModal && (
+          <JoinCodeModal onClose={() => setShowJoinModal(false)} />
         )}
       </AnimatePresence>
     </div>
