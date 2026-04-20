@@ -642,37 +642,63 @@ export default function POIForm({ poi, selectedLocation, tripCurrency = 'MMK', o
           }
         }
 
-        @media (min-width: 768px) {
+        @media (min-width: 768px) and (max-width: 1024px) {
+          .poi-form-overlay {
+            align-items: center;
+            padding: 20px;
+          }
+
           .poi-form-modal {
-            max-height: 75vh;
-            max-width: 560px;
+            border-radius: 20px;
+            max-height: 70vh;
+            max-width: 520px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
           }
 
           .poi-form-content-scroll {
-            max-height: calc(75vh - 80px);
+            max-height: calc(70vh - 80px);
+            padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+          }
+
+          .poi-form-header {
+            flex-shrink: 0;
           }
 
           .poi-form-content {
-            padding: 28px 32px 36px;
-            gap: 28px;
-          }
-
-          .poi-form-header h2 {
-            font-size: 24px;
-          }
-
-          .category-grid {
-            grid-template-columns: repeat(6, 1fr);
-            gap: 10px;
-          }
-
-          .category-grid button {
-            padding: 16px 8px;
-            font-size: 13px;
+            padding: 20px 24px 28px;
+            gap: 20px;
           }
 
           .form-row {
-            gap: 16px;
+            grid-template-columns: 1fr 1fr;
+          }
+
+          .category-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+          }
+
+          .category-grid button {
+            padding: 14px 10px;
+            font-size: 13px;
+          }
+
+          .search-input {
+            padding: 14px 16px;
+            font-size: 15px;
+          }
+
+          .cost-input {
+            padding: 14px 16px;
+            font-size: 15px;
+          }
+
+          .cancel-btn,
+          .submit-btn {
+            padding: 16px 20px;
+            font-size: 15px;
           }
         }
       `}</style>
