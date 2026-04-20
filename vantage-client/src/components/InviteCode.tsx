@@ -282,15 +282,69 @@ export default function InviteCode({ inviteCode, onClose }: InviteCodeProps) {
           color: #9ca3af;
         }
 
-        @media (max-width: 1024px) {
+        @media (min-width: 641px) and (max-width: 1024px) {
           .invite-overlay {
             align-items: center;
-            padding: 20px;
+            padding: 24px;
           }
 
           .invite-modal {
-            border-radius: 20px;
-            padding: 24px 24px 28px;
+            border-radius: 24px;
+            padding: 28px 26px;
+            max-width: 480px;
+          }
+
+          .invite-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+          }
+
+          .invite-header h3 {
+            font-size: 24px;
+          }
+
+          .copy-btn {
+            padding: 14px 18px;
+          }
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+          .invite-modal {
+            padding: 32px 28px;
+            max-width: 500px;
+          }
+
+          .invite-header {
+            margin-bottom: 28px;
+          }
+
+          .invite-icon {
+            width: 64px;
+            height: 64px;
+          }
+
+          .invite-icon svg {
+            width: 28px;
+            height: 28px;
+          }
+
+          .invite-header h3 {
+            font-size: 26px;
+          }
+
+          .invite-header p {
+            font-size: 15px;
+          }
+
+          .invite-input {
+            padding: 14px 16px;
+            font-size: 14px;
+          }
+
+          .copy-btn {
+            padding: 14px 20px;
+            font-size: 14px;
           }
         }
 
