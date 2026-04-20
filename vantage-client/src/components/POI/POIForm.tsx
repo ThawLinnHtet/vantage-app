@@ -739,7 +739,7 @@ export default function POIForm({ poi, selectedLocation, tripCurrency = 'MMK', o
             gap: 16px;
           }
         }
-      `}
+      `}</style>
     </motion.div>
   );
 }
