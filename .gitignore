@@ -35,3 +35,6 @@ coverage/
 
 # Misc
 *.log
+
+# Documentation
+*.md
