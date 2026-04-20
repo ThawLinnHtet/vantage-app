@@ -585,22 +585,22 @@ export default function POIForm({ poi, selectedLocation, tripCurrency = 'MMK', o
           background: #4a63e8;
         }
 
-        @media (max-width: 1024px) {
+        @media (max-width: 640px) {
           .poi-form-overlay {
             align-items: center;
-            padding: 20px;
+            padding: 16px;
           }
 
           .poi-form-modal {
             border-radius: 20px;
-            max-height: 65vh;
+            max-height: 60vh;
             overflow: hidden;
             display: flex;
             flex-direction: column;
           }
 
           .poi-form-content-scroll {
-            max-height: calc(65vh - 80px);
+            max-height: calc(60vh - 80px);
             padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
           }
 
@@ -609,23 +609,65 @@ export default function POIForm({ poi, selectedLocation, tripCurrency = 'MMK', o
           }
 
           .form-row {
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
+          }
+
+          .cost-input {
+            max-width: none;
           }
 
           .poi-form-content {
-            padding: 20px 24px 28px;
-            gap: 20px;
+            padding: 16px 20px 28px;
+            gap: 16px;
+          }
+
+          .category-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+          }
+
+          .category-grid button {
+            padding: 10px 6px;
+            font-size: 12px;
+          }
+
+          .form-actions {
+            gap: 10px;
+          }
+
+          .cancel-btn,
+          .submit-btn {
+            padding: 14px 16px;
+            font-size: 14px;
           }
         }
 
         @media (min-width: 641px) and (max-width: 1024px) {
+          .poi-form-overlay {
+            align-items: center;
+            padding: 20px;
+          }
+
           .poi-form-modal {
-            max-height: 70vh;
             border-radius: 24px;
+            max-height: 70vh;
+            max-width: 500px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
           }
 
           .poi-form-content-scroll {
             max-height: calc(70vh - 80px);
+            padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+          }
+
+          .poi-form-header {
+            flex-shrink: 0;
+          }
+
+          .poi-form-header h2 {
+            font-size: 22px;
           }
 
           .poi-form-content {
@@ -635,10 +677,6 @@ export default function POIForm({ poi, selectedLocation, tripCurrency = 'MMK', o
 
           .form-row {
             grid-template-columns: 1fr 1fr;
-          }
-
-          .poi-form-header h2 {
-            font-size: 22px;
           }
 
           .category-grid {
@@ -701,64 +739,7 @@ export default function POIForm({ poi, selectedLocation, tripCurrency = 'MMK', o
             gap: 16px;
           }
         }
-
-        @media (max-width: 640px) {
-          .poi-form-overlay {
-            align-items: center;
-            padding: 16px;
-          }
-
-          .poi-form-modal {
-            border-radius: 20px;
-            max-height: 60vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-          }
-
-          .poi-form-content-scroll {
-            max-height: calc(60vh - 80px);
-            padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
-          }
-
-          .poi-form-header {
-            flex-shrink: 0;
-          }
-
-          .form-row {
-            grid-template-columns: 1fr;
-          }
-
-          .cost-input {
-            max-width: none;
-          }
-
-          .poi-form-content {
-            padding: 16px 20px 28px;
-            gap: 16px;
-          }
-
-          .category-grid {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-          }
-
-          .category-grid button {
-            padding: 10px 6px;
-            font-size: 12px;
-          }
-
-          .form-actions {
-            gap: 10px;
-          }
-
-          .cancel-btn,
-          .submit-btn {
-            padding: 14px 16px;
-            font-size: 14px;
-          }
-        }
-      `}</style>
+      `}
     </motion.div>
   );
 }

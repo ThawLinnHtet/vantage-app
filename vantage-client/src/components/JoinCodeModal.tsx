@@ -274,64 +274,6 @@ export default function JoinCodeModal({ onClose }: JoinCodeModalProps) {
           color: #9ca3af;
         }
 
-        @media (min-width: 641px) and (max-width: 1024px) {
-          .join-modal {
-            border-radius: 24px;
-            padding: 32px 28px;
-            max-width: 440px;
-          }
-
-          .join-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 18px;
-          }
-
-          .join-icon svg {
-            width: 28px;
-            height: 28px;
-          }
-
-          .join-header h3 {
-            font-size: 24px;
-          }
-
-          .join-input {
-            padding: 18px 20px;
-            font-size: 22px;
-          }
-
-          .join-submit-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
-          }
-        }
-
-        @media (min-width: 768px) and (max-width: 1024px) {
-          .join-modal {
-            padding: 36px 32px;
-            max-width: 480px;
-          }
-
-          .join-header {
-            margin-bottom: 28px;
-          }
-
-          .join-icon {
-            width: 64px;
-            height: 64px;
-          }
-
-          .join-header h3 {
-            font-size: 26px;
-          }
-
-          .join-header p {
-            font-size: 16px;
-          }
-        }
-
         @media (max-width: 640px) {
           .join-modal {
             border-radius: 20px;
@@ -365,6 +307,44 @@ export default function JoinCodeModal({ onClose }: JoinCodeModalProps) {
           .join-submit-btn {
             width: 50px;
             height: 50px;
+          }
+        }
+
+        @media (min-width: 641px) and (max-width: 1024px) {
+          .join-modal {
+            border-radius: 24px;
+            padding: 32px 28px;
+            max-width: 440px;
+          }
+
+          .join-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+          }
+
+          .join-icon svg {
+            width: 28px;
+            height: 28px;
+          }
+
+          .join-header h3 {
+            font-size: 24px;
+          }
+
+          .join-header {
+            margin-bottom: 24px;
+          }
+
+          .join-input {
+            padding: 18px 20px;
+            font-size: 22px;
+          }
+
+          .join-submit-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
           }
         }
 
