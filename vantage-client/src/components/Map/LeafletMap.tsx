@@ -283,26 +283,6 @@ function LeafletMapComponent({
         ))}
       </MapContainer>
       
-      {/* Add Mode Indicator */}
-      {addMode && (
-        <div style={{
-          position: 'absolute',
-          top: 16,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background: '#5b76fe',
-          color: 'white',
-          padding: '8px 16px',
-          borderRadius: 20,
-          fontSize: 14,
-          fontWeight: 500,
-          zIndex: 1000,
-          boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-        }}>
-          📍 Click on map to add place
-        </div>
-      )}
-
       {/* Location Status Indicator */}
       {locationStatus === 'loading' && (
         <div style={{

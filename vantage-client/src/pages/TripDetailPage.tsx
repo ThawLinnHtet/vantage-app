@@ -388,6 +388,7 @@ export default function TripDetailPage() {
         <POIForm
           poi={editingPOI}
           selectedLocation={!editingPOI ? selectedLocation : null}
+          tripCurrency={trip?.budget?.currency || 'MMK'}
           onSubmit={editingPOI ? handleEditPOI : handleCreatePOI}
           onClose={() => {
             setShowPOIForm(false);

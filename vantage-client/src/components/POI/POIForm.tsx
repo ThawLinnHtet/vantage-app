@@ -3,10 +3,12 @@ import { motion } from 'framer-motion';
 import { Search, Loader2, MapPin, X } from 'lucide-react';
 import type { POI, POICategory, GeocodingResult } from '../../types';
 import { geocode } from '../../services/api';
+import { CURRENCIES } from '../../constants/currencies';
 
 interface POIFormProps {
   poi?: POI | null;
   selectedLocation?: { lat: number; lng: number; address?: string } | null;
+  tripCurrency?: string;
   onSubmit: (data: Partial<POI>) => void;
   onClose: () => void;
 }
@@ -20,7 +22,7 @@ const CATEGORIES: { value: POICategory; label: string; color: string }[] = [
   { value: 'other', label: 'Other', color: '#d4f5d9' },
 ];
 
-export default function POIForm({ poi, selectedLocation, onSubmit, onClose }: POIFormProps) {
+export default function POIForm({ poi, selectedLocation, tripCurrency = 'MMK', onSubmit, onClose }: POIFormProps) {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -110,13 +112,20 @@ export default function POIForm({ poi, selectedLocation, onSubmit, onClose }: PO
   const validate = () => {
     const newErrors: Record<string, string> = {};
     if (!formData.name.trim()) {
-      newErrors.name = 'Required';
+      newErrors.name = 'Place name required';
     }
     if (!formData.lat || !formData.lng || formData.lat === 0 || formData.lng === 0) {
-      newErrors.location = 'Required';
+      newErrors.location = 'Location required';
     }
+    const selectedCurrency = CURRENCIES.find(c => c.code === tripCurrency);
+    const minCost = selectedCurrency?.min || 10;
+    const maxCost = selectedCurrency?.max || 100000000;
     if (formData.cost === undefined || formData.cost === null || isNaN(formData.cost)) {
-      newErrors.cost = 'Required';
+      newErrors.cost = 'Estimated cost required';
+    } else if (formData.cost < minCost) {
+      newErrors.cost = `Minimum cost is ${minCost.toLocaleString()} ${tripCurrency}`;
+    } else if (formData.cost > maxCost) {
+      newErrors.cost = `Maximum cost is ${maxCost.toLocaleString()} ${tripCurrency}`;
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -215,7 +224,6 @@ export default function POIForm({ poi, selectedLocation, onSubmit, onClose }: PO
                 </p>
               )}
               {errors.location && <p className="error-text">{errors.location}</p>}
-              <p className="hint-text">Or click on the map</p>
             </div>
           </div>
 
@@ -247,8 +255,9 @@ export default function POIForm({ poi, selectedLocation, onSubmit, onClose }: PO
                 inputMode="numeric"
                 value={formData.cost || ''}
                 onChange={(e) => {
-                  const value = e.target.value.replace(/[^0-9]/g, '');
-                  setFormData({ ...formData, cost: value ? Number(value) : undefined });
+                  const digits = e.target.value.replace(/[^0-9]/g, '');
+                  const cleaned = digits.length > 1 ? digits.replace(/^0+/, '') : digits;
+                  setFormData({ ...formData, cost: cleaned ? Number(cleaned) : undefined });
                 }}
                 placeholder="0"
                 className={`cost-input ${errors.cost ? 'error' : ''}`}

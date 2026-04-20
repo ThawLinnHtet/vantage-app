@@ -6,6 +6,7 @@ import { useToastStore } from '../stores/toastStore';
 import { auth, trips } from '../services/api';
 import type { Trip } from '../types';
 import JoinCodeModal from '../components/JoinCodeModal';
+import { CURRENCIES } from '../constants/currencies';
 
 const getToday = () => new Date().toISOString().split('T')[0];
 
@@ -16,25 +17,6 @@ const VantageLogo = ({ size = 40 }: { size?: number }) => (
     <circle cx="8" cy="8" r="3" fill="#5b76fe" stroke="white" strokeWidth="1"/>
   </svg>
 );
-
-const CURRENCIES = [
-  { code: 'USD', name: 'US Dollar', symbol: '$' },
-  { code: 'EUR', name: 'Euro', symbol: '€' },
-  { code: 'GBP', name: 'British Pound', symbol: '£' },
-  { code: 'JPY', name: 'Japanese Yen', symbol: '¥' },
-  { code: 'AUD', name: 'Australian Dollar', symbol: 'A$' },
-  { code: 'CAD', name: 'Canadian Dollar', symbol: 'C$' },
-  { code: 'MMK', name: 'Myanmar Kyat', symbol: 'K' },
-  { code: 'THB', name: 'Thai Baht', symbol: '฿' },
-  { code: 'VND', name: 'Vietnamese Dong', symbol: '₫' },
-  { code: 'IDR', name: 'Indonesian Rupiah', symbol: 'Rp' },
-  { code: 'MYR', name: 'Malaysian Ringgit', symbol: 'RM' },
-  { code: 'PHP', name: 'Philippine Peso', symbol: '₱' },
-  { code: 'SGD', name: 'Singapore Dollar', symbol: 'S$' },
-  { code: 'KRW', name: 'South Korean Won', symbol: '₩' },
-  { code: 'CNY', name: 'Chinese Yuan', symbol: '¥' },
-  { code: 'INR', name: 'Indian Rupee', symbol: '₹' },
-];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -105,11 +87,11 @@ export default function TripsPage() {
           <span className="text-lg md:text-xl font-display" style={{ color: 'var(--color-primary)', letterSpacing: '-0.72px' }}>Vantage</span>
         </div>
         <div className="flex items-center gap-3 md:gap-4">
-          <div className="hidden sm:flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-interactive flex items-center justify-center text-white text-sm font-semibold">
               {user?.name?.charAt(0).toUpperCase()}
             </div>
-            <span className="text-body-standard text-sm" style={{ color: '#555a6a' }}>{user?.name}</span>
+            <span className="hidden sm:block text-body-standard text-sm" style={{ color: '#555a6a' }}>{user?.name}</span>
           </div>
           <motion.button 
             onClick={handleLogout} 
@@ -255,7 +237,7 @@ function CreateTripModal({ onClose, onCreated }: { onClose: () => void; onCreate
     startDate: getToday(),
     endDate: '',
     budget: '',
-    currency: 'USD'
+    currency: 'MMK'
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isGeocoding, setIsGeocoding] = useState(false);
@@ -268,7 +250,14 @@ function CreateTripModal({ onClose, onCreated }: { onClose: () => void; onCreate
     if (!formData.destination.trim()) newErrors.destination = 'Destination is required';
     if (!formData.startDate) newErrors.startDate = 'Start date is required';
     if (!formData.endDate) newErrors.endDate = 'End date is required';
-    if (!formData.budget || Number(formData.budget) <= 0) newErrors.budget = 'Budget must be greater than 0';
+    const selectedCurrency = CURRENCIES.find(c => c.code === formData.currency);
+    const minBudget = selectedCurrency?.min || 10;
+    const maxBudget = selectedCurrency?.max || 100000000;
+    if (!formData.budget || Number(formData.budget) < minBudget) {
+      newErrors.budget = `Minimum budget is ${minBudget.toLocaleString()} ${formData.currency}`;
+    } else if (Number(formData.budget) > maxBudget) {
+      newErrors.budget = `Maximum budget is ${maxBudget.toLocaleString()} ${formData.currency}`;
+    }
     if (formData.startDate && formData.endDate) {
       const start = new Date(formData.startDate);
       const end = new Date(formData.endDate);
@@ -388,11 +377,16 @@ function CreateTripModal({ onClose, onCreated }: { onClose: () => void; onCreate
               <div>
                 <label className="block text-caption mb-2" style={{ color: '#555a6a' }}>Budget *</label>
                 <input
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   value={formData.budget}
-                  onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                  onChange={(e) => {
+                    const digits = e.target.value.replace(/[^0-9]/g, '');
+                    const cleaned = digits.length > 1 ? digits.replace(/^0+/, '') : digits;
+                    setFormData({ ...formData, budget: cleaned });
+                  }}
                   className="input-field"
-                  placeholder="5000"
+                  placeholder="Min: 10,000"
                   style={errors.budget ? { borderColor: '#c53030' } : {}}
                 />
                 {errors.budget && <p className="text-small mt-1" style={{ color: '#c53030' }}>{errors.budget}</p>}
